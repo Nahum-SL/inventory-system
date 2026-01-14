@@ -1,0 +1,40 @@
+# Dependencias
+**/node_modules/
+**/dist/
+**/build/
+
+# Variables de entorno
+**/.env
+**/.env.local
+**/.env*.local
+
+# Archivos de sistema
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+**/logs/
+**/*.log
+**/npm-debug.log*
+
+# Prisma
+**/prisma/.env
+**/migrations/.env
+
+# Next.js
+**/.next/
+**/out/
+
+# Archivos de testing
+**/coverage/
+
+# Archivos temporales
+*.tmp
+*.temp
