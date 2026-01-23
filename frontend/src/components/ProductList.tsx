@@ -3,9 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { Product } from "../types/product";
-import { deleteProduct } from "../actions/product";
-
+import { Product } from "@/src/types/product";
+import { deleteProduct } from "@/src/actions/product";
 interface ProductListProps {
   products: Product[];
 }
@@ -22,7 +21,7 @@ export default function ProductList({ products }: ProductListProps) {
       await deleteProduct(id);
       router.refresh();
     } catch (err) {
-      alert("Error al eliminar el producto");
+      console.error("Error al eliminar el producto", err);
     } finally {
       setDeleting(null);
     }
@@ -58,6 +57,9 @@ export default function ProductList({ products }: ProductListProps) {
               Stock
             </th>
             <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+              Categoria
+            </th>
+            <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
               Acciones
             </th>
           </tr>
@@ -91,13 +93,20 @@ export default function ProductList({ products }: ProductListProps) {
                     product.stock > 10
                       ? "bg-green-100 text-green-800"
                       : product.stock > 0
-                      ? "bg-yellow-100 text-yellow-800"
-                      : "bg-red-100 text-red-800"
+                        ? "bg-yellow-100 text-yellow-800"
+                        : "bg-red-100 text-red-800"
                   }`}
                 >
                   {product.stock} Unidades
                 </span>
               </td>
+
+              <td className="px-6 py-4">
+                <span className="px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                  {product.category?.name || 'Sin categoria' }
+                </span>
+              </td>
+
               <td className="px-6 py-4 text-sm font-medium space-x-2">
                 <Link
                   href={`/products/${product.id}/edit`}

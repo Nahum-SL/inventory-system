@@ -2,7 +2,6 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'prisma/prisma.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
-import { Product } from '@prisma/client';
 
 @Injectable()
 export class ProductsService {
@@ -10,23 +9,25 @@ export class ProductsService {
   constructor(private readonly prisma: PrismaService) {}
 
   // Crear producto
-  async create(createProductDto: CreateProductDto): Promise<Product> {
+  create(createProductDto: CreateProductDto) {
     return this.prisma.product.create({
       data: createProductDto,
     });
   }
 
   // Obtener todos los productos
-  async findAll(): Promise<Product[]> {
+  findAll() {
     return this.prisma.product.findMany({
+      include: { category: true },
       orderBy: { createdAt: 'desc' },
     });
   }
 
   // Obtener un producto por ID
-  async findOne(id: number): Promise<Product> {
+  async findOne(id: number) {
     const product = await this.prisma.product.findUnique({
       where: { id },
+      include: { category: true },
     });
 
     if (!product) {
@@ -37,10 +38,7 @@ export class ProductsService {
   }
 
   // Actualizar producto
-  async update(
-    id: number,
-    updateProductDto: UpdateProductDto,
-  ): Promise<Product> {
+  async update(id: number, updateProductDto: UpdateProductDto) {
     // Verificar que existe
     await this.findOne(id);
 
@@ -51,7 +49,7 @@ export class ProductsService {
   }
 
   // Eliminar producto
-  async remove(id: number): Promise<Product> {
+  async remove(id: number) {
     // Verificar que existe
     await this.findOne(id);
 
